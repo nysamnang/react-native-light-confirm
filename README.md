@@ -1,1 +1,1 @@
-# react-native-confirm
+# react-native-light-confirm
