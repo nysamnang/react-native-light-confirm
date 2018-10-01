@@ -13,16 +13,22 @@ class Confirm extends Component {
   }
 
   componentDidMount() {
+    this.springValue.setValue(0);
     this.setState({
       visible: false
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      visible: nextProps.visible
-    });
-    this.animatedConfirm();
+    this.springValue.setValue(0);
+    this.setState(
+      {
+        visible: nextProps.visible
+      },
+      () => {
+        this.animatedConfirm();
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -76,16 +82,6 @@ class Confirm extends Component {
             </View>
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={this.props.onPrimary}
-                style={[
-                  styles.button,
-                  { backgroundColor: this.props.colorPrimary }
-                ]}
-              >
-                <Text style={styles.textButton}>{this.props.textPrimary}</Text>
-              </TouchableOpacity>
-
               {this.props.showSecondary ? (
                 <TouchableOpacity
                   onPress={
@@ -105,6 +101,15 @@ class Confirm extends Component {
                   </Text>
                 </TouchableOpacity>
               ) : null}
+              <TouchableOpacity
+                onPress={this.props.onPrimary}
+                style={[
+                  styles.button,
+                  { backgroundColor: this.props.colorPrimary }
+                ]}
+              >
+                <Text style={styles.textButton}>{this.props.textPrimary}</Text>
+              </TouchableOpacity>
             </View>
           </Animated.View>
         </View>
@@ -134,7 +139,7 @@ Confirm.defaultProps = {
   colorPrimary: "#00ACEF",
   showSecondary: true,
   textSecondary: "No",
-  colorSecondary: "#FA3838"
+  colorSecondary: "#F53D3D"
 };
 
 export default Confirm;
