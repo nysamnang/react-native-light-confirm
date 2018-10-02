@@ -10,6 +10,10 @@
 - Support all orientations
 - Support both Android and iOS
 
+|                                                      iOS                                                      |                                                    Android                                                    |
+| :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
+| ![](https://raw.githubusercontent.com/NYSamnang/stock-images/master/react-native-light-confirm/RNLCF-IOS.gif) | ![](https://raw.githubusercontent.com/NYSamnang/stock-images/master/react-native-light-confirm/RNLCF-AOS.gif) |
+
 ## Installation
 
 ```
@@ -22,16 +26,9 @@ npm i react-native-light-confirm --save
 yarn add react-native-light-confirm
 ```
 
-## Demo
-
-|                                                      iOS                                                      |                                                    Android                                                    |
-| :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
-| ![](https://raw.githubusercontent.com/NYSamnang/stock-images/master/react-native-light-confirm/RNLCF-IOS.gif) | ![](https://raw.githubusercontent.com/NYSamnang/stock-images/master/react-native-light-confirm/RNLCF-AOS.gif) |
-
 ## Example
 
 ```jsx
-
 import React, { Component } from "react";
 import Confirm from "react-native-light-confirm";
 
@@ -59,7 +56,6 @@ class Example extends Component {
 }
 
 export default Example;
-
 ```
 
 ## API Usage
