@@ -43,7 +43,7 @@ class Example extends Component {
   render() {
     return (
       <Confirm
-        visible={this.state.showCustom}
+        visible={this.state.showConfirm}
         message="Are you sure to leave this page?"
         textPrimary="Leave"
         colorPrimary="#FF9500"
