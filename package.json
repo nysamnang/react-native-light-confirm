@@ -1,6 +1,6 @@
 {
   "name": "react-native-light-confirm",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A Lightweight Confirm Component for React Native",
   "main": "index.js",
   "scripts": {
