@@ -1,4 +1,6 @@
 # react-native-light-confirm
+[![npm version](https://badge.fury.io/js/react-native-light-confirm.svg)](//npmjs.com/package/react-native-light-confirm) [![npm downloads](https://img.shields.io/npm/dm/react-native-light-confirm.svg)
+](//npmjs.com/package/react-native-light-confirm)
 
 - Super lightweight component
 - Smooth animation
