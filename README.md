@@ -5,10 +5,7 @@
 - Super lightweight component
 - Smooth animation
 - Display one button or two buttons
-- Custom title
-- Custom button's text
-- Custom button's color
-- Event on button
+- Custom whatever you like
 - Support all orientations
 - Support both Android and iOS
 
@@ -32,53 +29,116 @@ yarn add react-native-light-confirm
 
 ```jsx
 import React, { Component } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import Confirm from "react-native-light-confirm";
 
 class Example extends Component {
-  constructor() {
-    super();
-    this.state = {
-      showConfirm: true
-    };
-  }
-
   render() {
     return (
-      <Confirm
-        visible={this.state.showConfirm}
-        message="Are you sure to leave this page?"
-        textPrimary="Leave"
-        colorPrimary="#FF9500"
-        colorSecondary="#1395EC"
-        onPrimary={() => console.log("onPrimary")}
-        onSecondary={() => console.log("onSecondary")}
-      />
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => this.Confirm.open()}
+          style={styles.button}
+        >
+          <Text style={styles.text}>CUSTOM CONFIRM</Text>
+        </TouchableOpacity>
+
+        <Confirm
+          ref={ref => {
+            this.Confirm = ref;
+          }}
+          onRight={() => this.Confirm.close()}
+          title="Are you sure to leave this page?"
+          customStyles={{
+            mask: {
+              backgroundColor: "transparent"
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#9900cc"
+            },
+            buttonLeft: {
+              backgroundColor: "#4da6ff"
+            },
+            buttonRight: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+      </View>
     );
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    paddingTop: 150,
+    backgroundColor: "#F5FCFF"
+  },
+  button: {
+    backgroundColor: "#4EB151",
+    paddingVertical: 11,
+    paddingHorizontal: 17,
+    borderRadius: 3
+  },
+  text: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "600"
+  }
+});
+
 export default Example;
 ```
 
-## API Usage
+## Props
 
-| Props          | Type   | Required | Description                                   | Default                    |
-| -------------- | ------ | -------- | --------------------------------------------- | -------------------------- |
-| visible        | bool   | Yes      | Show Confirm or not                           | false                      |
-| background     | bool   | No       | Display dark background when Confirm is shown | true                       |
-| message        | string | No       | Confirm's title                               | "Do you want to continue?" |
-| textPrimary    | string | No       | Text display on primary button                | "Yes"                      |
-| colorPrimary   | string | No       | Color apply to primary button                 | "#00ACEF"                  |
-| onPrimary      | func   | No       | Event on primary button                       | -                          |
-| showSecondary  | bool   | No       | Display secondary button or not               | true                       |
-| textSecondary  | string | No       | Text display on secondary button              | "No"                       |
-| colorSecondary | String | No       | Color apply to primary button                 | "#F53D3D"                  |
-| onSecondary    | func   | No       | Event on secondary button                     | -                          |
+| Prop         | Type     | Description                                                           | Default                    |
+| ------------ | -------- | --------------------------------------------------------------------- | -------------------------- |
+| title        | string   | Title of Confirm dialog                                               | "Do you want to continue?" |
+| textLeft     | string   | Text display on Left button                                           | "No"                       |
+| textRight    | string   | Text display on Right button                                          | "Yes"                      |
+| oneButton    | boolean  | If `true`, Confirm dialog displays only one button (Hide Left button) | false                      |
+| customStyles | object   | Custom style to Confirm dialog                                        | {}                         |
+| onLeft       | function | Event on Left button                                                  |                            |
+| onRight      | function | Event on Right button                                                 |                            |
+| onMask       | function | Event on Mask (The area outside Confirm dialog)                       |                            |
+
+### Available Custom Style
+
+```jsx
+customStyles: {
+  title: {...}, // Confirm Dialog's Title
+  mask: {...}, // The area outside Confirm dialog
+  container: {...}, // Confirm dialog Container
+  content: {...}, // Confirm dialog Content
+  buttonLeft: {...}, // Left button
+  buttonRight: {...}, // Right button
+  textLeft: {...}, // Left button's Text
+  textRight: {...} // Right button's Text
+
+}
+```
+
+## Methods
+
+| Method Name | Description          |
+| ----------- | -------------------- |
+| open        | Open Confirm dialog  |
+| close       | Close Confirm dialog |
 
 ### Note
 
-Set props `visible` to `false` after you finished your task to prevent Confirm dialog shows again and again when state changed.
+Always set `ref` to `Confirm` and call each method by using `this.Confirm.methodName()` like example above.
+
+##### \*Release note: If you are using version 1.0, please update to version 1.1 for better experience.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/NYSamnang/react-native-light-confirm/blob/master/LICENSE) file for details
+
+## Author
+
+Made with ❤️ by [NY Samnang](https://github.com/NYSamnang).

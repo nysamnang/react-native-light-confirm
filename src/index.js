@@ -1,34 +1,29 @@
 import React, { Component } from "react";
-import { Text, View, Animated, Modal, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
+import { Text, View, Animated, Modal, TouchableOpacity } from "react-native";
 import styles from "./style";
+
+const SUPPORTED_ORIENTATIONS = [
+  "portrait",
+  "portrait-upside-down",
+  "landscape",
+  "landscape-left",
+  "landscape-right"
+];
 
 class Confirm extends Component {
   constructor() {
     super();
+
     this.state = {
       visible: false
     };
+
     this.springValue = new Animated.Value(0);
-  }
 
-  componentDidMount() {
-    this.springValue.setValue(0);
-    this.setState({
-      visible: false
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.springValue.setValue(0);
-    this.setState(
-      {
-        visible: nextProps.visible
-      },
-      () => {
-        this.animatedConfirm();
-      }
-    );
+    this.onMask = this.onMask.bind(this);
+    this.onLeft = this.onLeft.bind(this);
+    this.onRight = this.onRight.bind(this);
   }
 
   componentWillUnmount() {
@@ -43,103 +38,111 @@ class Confirm extends Component {
     }).start();
   }
 
+  onMask() {
+    if (typeof this.props.onMask === "function") {
+      this.props.onMask();
+    }
+  }
+
+  onLeft() {
+    this.close();
+    if (typeof this.props.onLeft === "function") {
+      this.props.onLeft();
+    }
+  }
+
+  onRight() {
+    if (typeof this.props.onRight === "function") {
+      this.props.onRight();
+    }
+  }
+
+  open() {
+    this.setState({ visible: true }, () => this.animatedConfirm());
+  }
+
+  close() {
+    this.setState({ visible: false }, () => this.springValue.setValue(0));
+  }
+
   render() {
+    const { title, oneButton, textLeft, textRight, customStyles } = this.props;
     return (
       <Modal
         visible={this.state.visible}
         transparent={true}
         animationType="fade"
         onRequestClose={() => console.log("onRequestClose")}
-        supportedOrientations={[
-          "portrait",
-          "portrait-upside-down",
-          "landscape",
-          "landscape-left",
-          "landscape-right"
-        ]}
+        supportedOrientations={SUPPORTED_ORIENTATIONS}
       >
-        <View
-          style={[
-            styles.background,
-            {
-              backgroundColor:
-                this.props.background === true
-                  ? "rgba(0, 0, 0, 0.4)"
-                  : "transparent"
-            }
-          ]}
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={this.onMask}
+          style={[styles.background, customStyles.mask]}
         >
           <Animated.View
             style={[
               styles.container,
               {
                 transform: [{ scale: this.springValue }]
-              }
+              },
+              customStyles.container
             ]}
           >
-            <View style={styles.content}>
-              <Text style={styles.text}>{this.props.message}</Text>
-            </View>
+            <TouchableOpacity activeOpacity={1} style={customStyles.content}>
+              <View style={styles.content}>
+                <Text style={[styles.title, customStyles.title]}>{title}</Text>
+              </View>
 
-            <View style={styles.buttonContainer}>
-              {this.props.showSecondary ? (
+              <View style={styles.buttonContainer}>
+                {oneButton ? null : (
+                  <TouchableOpacity
+                    onPress={this.onLeft}
+                    style={[
+                      styles.button,
+                      styles.buttonLeft,
+                      customStyles.buttonLeft
+                    ]}
+                  >
+                    <Text style={[styles.textButton, customStyles.textLeft]}>
+                      {textLeft}
+                    </Text>
+                  </TouchableOpacity>
+                )}
                 <TouchableOpacity
-                  onPress={
-                    this.props.onSecondary
-                      ? this.props.onSecondary
-                      : () => {
-                          this.setState({ visible: false });
-                        }
-                  }
-                  style={[
-                    styles.button,
-                    { backgroundColor: this.props.colorSecondary }
-                  ]}
+                  onPress={this.onRight}
+                  style={[styles.button, customStyles.buttonRight]}
                 >
-                  <Text style={styles.textButton}>
-                    {this.props.textSecondary}
+                  <Text style={[styles.textButton, customStyles.textRight]}>
+                    {textRight}
                   </Text>
                 </TouchableOpacity>
-              ) : null}
-              <TouchableOpacity
-                onPress={this.props.onPrimary}
-                style={[
-                  styles.button,
-                  { backgroundColor: this.props.colorPrimary }
-                ]}
-              >
-                <Text style={styles.textButton}>{this.props.textPrimary}</Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           </Animated.View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     );
   }
 }
 
 Confirm.propTypes = {
-  visible: PropTypes.bool.isRequired,
-  background: PropTypes.bool,
-  message: PropTypes.string,
-  textPrimary: PropTypes.string,
-  colorPrimary: PropTypes.string,
-  onPrimary: PropTypes.func,
-  showSecondary: PropTypes.bool,
-  textSecondary: PropTypes.string,
-  colorSecondary: PropTypes.string,
-  onSecondary: PropTypes.func
+  customStyles: PropTypes.object,
+  title: PropTypes.string,
+  textLeft: PropTypes.string,
+  textRight: PropTypes.string,
+  onMask: PropTypes.func,
+  onLeft: PropTypes.func,
+  onRight: PropTypes.func,
+  oneButton: PropTypes.bool
 };
 
 Confirm.defaultProps = {
-  visible: false,
-  background: true,
-  message: "Do you want to continue?",
-  textPrimary: "Yes",
-  colorPrimary: "#00ACEF",
-  showSecondary: true,
-  textSecondary: "No",
-  colorSecondary: "#F53D3D"
+  customStyles: {},
+  title: "Do you want to continue?",
+  textLeft: "No",
+  textRight: "Yes",
+  oneButton: false
 };
 
 export default Confirm;
